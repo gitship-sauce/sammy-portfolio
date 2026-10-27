@@ -11,14 +11,23 @@ little; these tags are Sammy's exact code.
 | --- | --- |
 | `ch3-plan` | The requirements and the rules for Claude, before any code |
 | `ch4-pages` | Home page, project page and contact links, with sample projects |
+| `ch5-admin` | Projects saved in a database, plus an admin page to add, edit and delete them |
+
+> **`ch5-admin` has a security hole on purpose.** It's the one found in chapter 6. Run it on your
+> own computer only; never put it online.
 
 ## Run it on your computer
 
-Node.js 20 or newer, and pnpm.
+You need Node.js 20 or newer, pnpm, and a free [Neon](https://neon.com) account.
 
-```
-pnpm install
-pnpm dev
-```
+1. **Get the code:** `pnpm install`
+2. **Create the database:** in Neon, create a project. On its dashboard, click **Connect** and
+   copy the connection string.
+3. **Fill in your settings:** copy `.env.example` to a new file called `.env.local`, then put in
+   the connection string, the email and password you want for the admin page, and a session
+   secret (the command to make one is in the file).
+4. **Create the table:** `pnpm db:setup`
+5. **Start it:** `pnpm dev`, then open http://localhost:3000
 
-Then open http://localhost:3000
+Log in at http://localhost:3000/admin with the email and password from `.env.local`. To get
+Sammy's three projects, add them there with the pictures in `sample-pictures/`.

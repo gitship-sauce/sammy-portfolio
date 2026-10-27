@@ -1,5 +1,6 @@
+import { Suspense } from "react";
 import { ProjectRow } from "@/components/project-row";
-import { projects } from "@/lib/projects";
+import { getProjects } from "@/lib/projects";
 
 export default function Home() {
   return (
@@ -33,13 +34,16 @@ export default function Home() {
       </section>
 
       <section id="projects" className="mx-auto max-w-6xl scroll-mt-24 px-6">
-        <Projects />
+        <Suspense fallback={<p className="text-muted">Loading projects…</p>}>
+          <Projects />
+        </Suspense>
       </section>
     </main>
   );
 }
 
-function Projects() {
+async function Projects() {
+  const projects = await getProjects();
   return (
     <>
       <div className="flex items-end justify-between border-b border-line pb-6">

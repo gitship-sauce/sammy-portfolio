@@ -1,10 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { projects } from "@/lib/projects";
-
-export function generateStaticParams() {
-  return projects.map((project) => ({ id: project.id }));
-}
+import { Suspense } from "react";
+import { getProjects } from "@/lib/projects";
 
 export default function ProjectPage({ params }: PageProps<"/projects/[id]">) {
   return (
@@ -12,13 +9,16 @@ export default function ProjectPage({ params }: PageProps<"/projects/[id]">) {
       <Link href="/#projects" className="text-sm font-medium text-muted hover:text-ink">
         ← All projects
       </Link>
-      <ProjectDetails params={params} />
+      <Suspense fallback={<p className="mt-10 text-muted">Loading…</p>}>
+        <ProjectDetails params={params} />
+      </Suspense>
     </main>
   );
 }
 
 async function ProjectDetails({ params }: { params: PageProps<"/projects/[id]">["params"] }) {
   const { id } = await params;
+  const projects = await getProjects();
   const index = projects.findIndex((project) => project.id === id);
   if (index === -1) notFound();
   const project = projects[index];
