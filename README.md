@@ -10,6 +10,7 @@ little; these tags are Sammy's exact code.
 | Tag | Chapter |
 | --- | --- |
 | `ch3-plan` | The requirements and the rules for Claude, before any code |
+| `ch4-pages` | Home page, project page and contact links, with sample projects |
 
 ## Run it on your computer
 
