@@ -1,4 +1,5 @@
 import { createHmac, createHash, timingSafeEqual } from "node:crypto";
+import { cookies } from "next/headers";
 
 // One admin: the email and password come from environment variables, never from the code.
 // After logging in, the browser keeps a cookie that only this server can sign.
@@ -38,4 +39,13 @@ export function isValidSession(value: string | undefined) {
   if (!expires || !signature) return false;
   if (!sameText(signature, sign(expires))) return false;
   return Number(expires) > Date.now() / 1000;
+}
+
+// The lock on every save, edit and delete: is this request from the logged-in admin?
+export async function isAdmin() {
+  return isValidSession((await cookies()).get(SESSION_COOKIE)?.value);
+}
+
+export function notLoggedIn() {
+  return Response.json({ error: "Log in as the admin first." }, { status: 401 });
 }

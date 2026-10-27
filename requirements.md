@@ -13,6 +13,7 @@ A website about me and my projects, for software internship applications.
 - Log in with my username and password, on an admin page.
 - Add, edit and delete projects, and upload a picture for each.
 - Change the content without editing code, like a C M S.
+- Only I can change projects: every save, edit and delete checks my login on the server, not just a hidden page.
 
 ## Tools
 

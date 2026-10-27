@@ -1,8 +1,10 @@
 import { sql } from "@/lib/db";
 import { readProjectForm } from "@/lib/projects";
+import { isAdmin, notLoggedIn } from "@/lib/session";
 
 // The admin form sends new projects here.
 export async function POST(request: Request) {
+  if (!(await isAdmin())) return notLoggedIn();
   const input = await readProjectForm(request);
   if (typeof input === "string") return Response.json({ error: input }, { status: 400 });
 

@@ -1,8 +1,10 @@
 import { sql } from "@/lib/db";
 import { projectIdPattern, readProjectForm } from "@/lib/projects";
+import { isAdmin, notLoggedIn } from "@/lib/session";
 
 // The admin page edits a project here. An empty picture keeps the current one.
 export async function PATCH(request: Request, { params }: RouteContext<"/api/projects/[id]">) {
+  if (!(await isAdmin())) return notLoggedIn();
   const { id } = await params;
   if (!projectIdPattern.test(id)) return Response.json({ error: "No project with that id." }, { status: 404 });
   const input = await readProjectForm(request);
@@ -22,6 +24,7 @@ export async function PATCH(request: Request, { params }: RouteContext<"/api/pro
 
 // The admin page deletes a project here.
 export async function DELETE(_request: Request, { params }: RouteContext<"/api/projects/[id]">) {
+  if (!(await isAdmin())) return notLoggedIn();
   const { id } = await params;
   if (!projectIdPattern.test(id)) return Response.json({ error: "No project with that id." }, { status: 404 });
   const rows = await sql`delete from projects where id = ${id} returning id`;
